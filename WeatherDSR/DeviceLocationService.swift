@@ -53,6 +53,7 @@ extension DeviceLocationService: CLLocationManagerDelegate {
         switch manager.authorizationStatus {
         case .authorizedAlways, .authorizedWhenInUse:
             locationManager.startUpdatingLocation()
+        case .notDetermined: break
         default:
             locationManager.stopUpdatingLocation()
             deniedLocationAccessPublisher.send()
