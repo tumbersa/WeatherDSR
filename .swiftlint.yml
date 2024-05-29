@@ -12,3 +12,10 @@ identifier_name:
     - y
     - z
     - uv
+
+line_length:
+  warning: 130
+  ignores_function_declarations: true
+  ignores_comments: true
+  ignores_interpolated_strings: true
+  ignores_urls: true
