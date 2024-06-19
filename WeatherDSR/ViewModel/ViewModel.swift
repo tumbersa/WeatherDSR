@@ -31,6 +31,7 @@ final class ViewModel: ObservableObject {
     
     private let calendar = Calendar.current
     private let forecastDay = 2
+    private var forecastAllForecast: [ForecastModel.Forecastday] = []
     
     private lazy var dateFormatter = {
         let dateFormatter = DateFormatter()
@@ -110,6 +111,7 @@ final class ViewModel: ObservableObject {
                 let currentDate = Date()
                 let currentHour = calendar.component(.hour, from: currentDate)
             
+                forecastAllForecast = body.forecast.forecastday
                 appendForecastArray(body: body.forecast.forecastday[0])
                 
                 // Второй день
@@ -135,13 +137,17 @@ final class ViewModel: ObservableObject {
             let forecastHour = calendar.component(.hour, from: date)
             let forecastDay = calendar.component(.day, from: date)
             
+            print("forecastDay \(forecastDay)")
+            print("currentDay \(currentDay)")
             if forecastDay == currentDay {
                 return forecastHour > currentHour && currentHour + 5 >= forecastHour
             } else {
-                return forecastHour + 4 - forecastInfo.count >= 0
+                print("forecastHour \(forecastHour)")
+                print("currentHour \(currentHour)")
+                return 4 - forecastInfo.count >= 0 && forecastHour <= 4 - forecastInfo.count
             }
         }.sorted(by: {
-            $0.time ?? "" > $1.time ?? ""
+            $0.time ?? "" < $1.time ?? ""
         })
         .forEach { [weak self] hourForecast in
             guard let self else { return }

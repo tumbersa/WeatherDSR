@@ -22,9 +22,11 @@ struct ContentView: View {
             
             let rows = [GridItem(.flexible())]
             
-            LazyHGrid(rows: rows) {
-                ForEach(viewModel.forecastInfo.prefix(5), id: \.date) { infoItem in
-                    ForecastViewCell(infoItem: infoItem)
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHGrid(rows: rows) {
+                    ForEach(viewModel.forecastInfo.prefix(5), id: \.date) { infoItem in
+                        ForecastViewCell(infoItem: infoItem)
+                    }
                 }
             }
         }
@@ -43,9 +45,9 @@ struct ForecastViewCell: View {
     
     var body: some View {
         VStack {
-            Text("date: \(infoItem.date)")
-            Text("tempC: \(infoItem.tempC)")
-            Text("precipitation: \(infoItem.precipitation)")
+            Text("\(infoItem.date)")
+            Text("\(infoItem.tempC) °C")
+            Text("\(infoItem.precipitation) mm")
         }
         .padding()
     }
