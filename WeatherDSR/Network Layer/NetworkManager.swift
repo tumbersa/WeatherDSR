@@ -12,6 +12,9 @@ protocol Networkable {
     var provider: MoyaProvider<WeatherAPI> { get }
     func fetchCurrentWeather(coordinates: Coordinates, 
                              completion: @escaping (Result<CurrentWeatherResponse, Error>) -> Void)
+    func fetchForecastWeather(coordinates: Coordinates,
+                              forecastDay: Int,
+                              completion: @escaping (Result<ForecastModel, Error>) -> Void)
 }
 
 final class NetworkManager: Networkable {
@@ -23,6 +26,12 @@ final class NetworkManager: Networkable {
     func fetchCurrentWeather(coordinates: Coordinates, 
                              completion: @escaping (Result<CurrentWeatherResponse, Error>) -> Void) {
         request(target: .current(coordinates: coordinates), completion: completion)
+    }
+    
+    func fetchForecastWeather(coordinates: Coordinates,
+                              forecastDay: Int,
+                              completion: @escaping (Result<ForecastModel, Error>) -> Void) {
+        request(target: .forecast(coordinates: coordinates, forecastDay: forecastDay), completion: completion)
     }
 }
 

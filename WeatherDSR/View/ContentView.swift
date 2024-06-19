@@ -13,12 +13,20 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text("Weather:")
+            Text("Current weather:")
             Text("region: \(viewModel.weatherInfo.region)")
             Text("pressureMB: \(viewModel.weatherInfo.pressureMB)")
             Text("tempC: \(viewModel.weatherInfo.tempC)")
             Text("windKph: \(viewModel.weatherInfo.windKph)")
             Text("precipitation: \(viewModel.weatherInfo.precipitation)")
+            
+            let rows = [GridItem(.flexible())]
+            
+            LazyHGrid(rows: rows) {
+                ForEach(viewModel.forecastInfo.prefix(5), id: \.date) { infoItem in
+                    ForecastViewCell(infoItem: infoItem)
+                }
+            }
         }
         .padding()
         .onAppear {
@@ -26,6 +34,24 @@ struct ContentView: View {
             viewModel.observeLocationAccessDenied()
             viewModel.requestLocationUpdates()
         }
+    }
+}
+
+struct ForecastViewCell: View {
+    
+    private var infoItem: ForecastInfo
+    
+    var body: some View {
+        VStack {
+            Text("date: \(infoItem.date)")
+            Text("tempC: \(infoItem.tempC)")
+            Text("precipitation: \(infoItem.precipitation)")
+        }
+        .padding()
+    }
+    
+    init(infoItem: ForecastInfo) {
+        self.infoItem = infoItem
     }
 }
 

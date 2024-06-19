@@ -14,31 +14,34 @@ struct AuthView: View {
     @State private var isSignedIn = false
     
     var body: some View {
-        NavigationView {
-            VStack {
-                GoogleSignInButton(style: .wide) {
-                    self.userInfo = ""
-                    guard let rootViewController = self.rootViewController else {
-                        print("No root view controller")
-                        return
-                    }
-                    GIDSignIn.sharedInstance.signIn(
-                        withPresenting: rootViewController) { result, error in
-                            guard let result else {
-                                print("Error signing in: \(String(describing: error))")
-                                return
-                            }
-                            print("Successfully signed in user")
-                            self.userInfo = result.user.profile?.name ?? ""
-                            self.isSignedIn = true
-                        }
+        VStack {
+            Text("Sign in to see the weather")
+                .padding()
+            
+            GoogleSignInButton(style: .wide) {
+                self.userInfo = ""
+                guard let rootViewController = self.rootViewController else {
+                    print("No root view controller")
+                    return
                 }
-                
-                NavigationLink(destination: ContentView().navigationBarBackButtonHidden(true), isActive: $isSignedIn) {
-                    EmptyView()
-                }.hidden()
+                GIDSignIn.sharedInstance.signIn(
+                    withPresenting: rootViewController) { result, error in
+                        guard let result else {
+                            print("Error signing in: \(String(describing: error))")
+                            return
+                        }
+                        
+                        print("Successfully signed in user")
+                        self.userInfo = result.user.profile?.name ?? ""
+                        self.isSignedIn = true
+                    }
             }
+            
+            NavigationLink(destination: ContentView().navigationBarBackButtonHidden(true), isActive: $isSignedIn) {
+                EmptyView()
+            }.hidden()
         }
+        .padding()
     }
     
     var rootViewController: UIViewController? {

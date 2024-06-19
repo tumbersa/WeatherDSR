@@ -12,10 +12,16 @@ import SwiftUI
 struct WeatherDSRApp: App {
     var body: some Scene {
         WindowGroup {
-            AuthView()
-                .onOpenURL { url in
-                    GIDSignIn.sharedInstance.handle(url)
+            NavigationView {
+                if GIDSignIn.sharedInstance.hasPreviousSignIn() {
+                    ContentView()
+                } else {
+                    AuthView()
+                        .onOpenURL { url in
+                            GIDSignIn.sharedInstance.handle(url)
+                        }
                 }
+            }
         }
     }
 }

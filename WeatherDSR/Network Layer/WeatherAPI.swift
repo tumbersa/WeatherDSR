@@ -10,6 +10,7 @@ import Moya
 
 enum WeatherAPI {
     case current(coordinates: Coordinates)
+    case forecast(coordinates: Coordinates, forecastDay: Int)
 }
 
 extension WeatherAPI: TargetType {
@@ -21,9 +22,11 @@ extension WeatherAPI: TargetType {
     }
     
     var path: String {
-        switch self {
+        return switch self {
         case .current:
-            return Constants.Weather.path
+            Constants.Weather.currentPath
+        case .forecast:
+            Constants.Weather.forecastPath
         }
     }
     
@@ -37,6 +40,12 @@ extension WeatherAPI: TargetType {
                 .requestParameters(parameters: [
                     "key": Constants.Weather.apiKey,
                     "q": "\(coordinates.latitude),\(coordinates.longitude)"
+                ], encoding: URLEncoding.queryString)
+        case .forecast(coordinates: let coordinates, forecastDay: let forecastDay):
+                .requestParameters(parameters: [
+                    "key": Constants.Weather.apiKey,
+                    "q": "\(coordinates.latitude),\(coordinates.longitude)",
+                    "days" : forecastDay
                 ], encoding: URLEncoding.queryString)
         }
     }

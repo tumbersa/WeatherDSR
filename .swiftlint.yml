@@ -12,6 +12,11 @@ identifier_name:
     - y
     - z
     - uv
+    - e
+    - n
+    - w
+    - s
+
 
 line_length:
   warning: 130

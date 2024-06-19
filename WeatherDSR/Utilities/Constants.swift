@@ -11,6 +11,7 @@ enum Constants {
     enum Weather {
         static let apiKey = "81c3719dbe7c4784aaa130204242805"
         static let baseUrl = "http://api.weatherapi.com/v1"
-        static let path = "/current.json"
+        static let currentPath = "/current.json"
+        static let forecastPath = "/forecast.json"
     }
 }
